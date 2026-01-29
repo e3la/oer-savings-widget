@@ -5,6 +5,7 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
 
 
 <!-- START FIXED OER WIDGET -->
+<!-- START FIXED OER WIDGET -->
 <div id="oer-a11y-widget">
 
     <!-- 1. Load Chart.js -->
@@ -46,7 +47,7 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
             border-right: 1px solid #ccc;
         }
 
-        h2 {
+        #oer-a11y-widget h2 {
             margin: 0 0 10px 0;
             color: #1b5e20;
             font-size: 1.4rem;
@@ -63,14 +64,14 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
         /* FORM CONTROLS */
         .input-group { margin-bottom: 15px; }
         
-        label {
+        #oer-a11y-widget label {
             display: block;
             font-weight: 700;
             margin-bottom: 5px;
             color: #222;
         }
 
-        input[type="number"] {
+        #oer-a11y-widget input[type="number"] {
             width: 100%;
             padding: 10px;
             border: 2px solid #555;
@@ -78,15 +79,16 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
             font-size: 1rem;
             background: #fff;
             color: #000;
+            box-sizing: border-box; 
         }
 
-        input[type="number"]:focus {
+        #oer-a11y-widget input[type="number"]:focus {
             outline: 3px solid #005fcc;
             border-color: #005fcc;
         }
 
         /* ACCESSIBLE RADIO BUTTONS */
-        fieldset {
+        #oer-a11y-widget fieldset {
             border: 0;
             padding: 0;
             margin: 20px 0 0 0;
@@ -94,7 +96,7 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
             padding-top: 15px;
         }
 
-        legend {
+        #oer-a11y-widget legend {
             font-weight: 700;
             margin-bottom: 10px;
             display: block;
@@ -552,7 +554,11 @@ For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widg
             update();
         })();
     </script>
-</div>
+<br>
 
+This CC0 widget (a <a href="https://e3la.github.io/oer-savings-widget">copy of the code is here for your convenience</a>) was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
+
+</div>
 <!-- END WIDGET CODE -->
-This CC0 widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
+
+
