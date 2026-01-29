@@ -1,6 +1,8 @@
 # oer-savings-widget
 I vibe coded an interactive line chart bar chart for showing cost savings for low cost and OER textbook adoption.
 
+For an easy copy version go to: <a href="https://e3la.github.io/oer-savings-widget/">the widget page</a> or copy the below.
+
 
 <!-- START FIXED OER WIDGET -->
 <div id="oer-a11y-widget">
@@ -553,4 +555,4 @@ I vibe coded an interactive line chart bar chart for showing cost savings for lo
 </div>
 
 <!-- END WIDGET CODE -->
-This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
+This CC0 widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
