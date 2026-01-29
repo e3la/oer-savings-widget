@@ -1,2 +1,556 @@
 # oer-savings-widget
 I vibe coded an interactive line chart bar chart for showing cost savings for low cost and OER textbook adoption.
+
+
+<!-- START FIXED OER WIDGET -->
+<div id="oer-a11y-widget">
+
+    <!-- 1. Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- 2. CSS Styles -->
+    <style>
+        #oer-a11y-widget {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            max-width: 100%;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #767676;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            color: #222;
+        }
+
+        /* SCREEN READER ONLY CLASS */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* LEFT PANEL */
+        .oer-panel-left {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-right: 1px solid #ccc;
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            color: #1b5e20;
+            font-size: 1.4rem;
+        }
+
+        .oer-desc {
+            font-size: 0.95rem;
+            color: #444;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 15px;
+        }
+
+        /* FORM CONTROLS */
+        .input-group { margin-bottom: 15px; }
+        
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #555;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: #fff;
+            color: #000;
+        }
+
+        input[type="number"]:focus {
+            outline: 3px solid #005fcc;
+            border-color: #005fcc;
+        }
+
+        /* ACCESSIBLE RADIO BUTTONS */
+        fieldset {
+            border: 0;
+            padding: 0;
+            margin: 20px 0 0 0;
+            border-top: 1px solid #ccc;
+            padding-top: 15px;
+        }
+
+        legend {
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: block;
+            width: 100%;
+        }
+
+        .radio-flex { display: flex; gap: 10px; }
+
+        .custom-radio {
+            position: relative;
+            flex: 1;
+        }
+
+        .custom-radio input {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 1;
+        }
+
+        .radio-tile {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            background: #fff;
+            border: 2px solid #555;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .custom-radio input:focus + .radio-tile {
+            outline: 3px solid #005fcc;
+            border-color: #005fcc;
+        }
+
+        .custom-radio input:checked + .radio-tile {
+            background-color: #1b5e20;
+            color: #fff;
+            border-color: #1b5e20;
+        }
+
+        /* RIGHT PANEL */
+        .oer-panel-right {
+            flex: 1.5;
+            min-width: 320px;
+            padding: 20px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .viz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .viz-title {
+            font-weight: 800;
+            color: #1b5e20;
+            font-size: 1.1rem;
+        }
+
+        /* TOGGLE SWITCH */
+        .toggle-wrapper {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .toggle-wrapper input {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .toggle-bg {
+            width: 40px; height: 22px;
+            background: #555;
+            border-radius: 20px;
+            margin: 0 8px;
+            position: relative;
+        }
+        
+        .toggle-dot {
+            width: 16px; height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px; left: 3px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-wrapper input:checked ~ .toggle-bg { background: #1b5e20; }
+        .toggle-wrapper input:checked ~ .toggle-bg .toggle-dot { transform: translateX(18px); }
+        .toggle-wrapper input:focus ~ .toggle-bg { outline: 3px solid #005fcc; }
+
+        .chart-box {
+            position: relative;
+            flex-grow: 1;
+            min-height: 300px;
+            width: 100%;
+            /* Extra padding to ensure labels don't clip */
+            padding-right: 5px; 
+            padding-left: 5px;
+        }
+
+        /* RESULTS CARDS */
+        .results-section { margin-top: 20px; }
+        
+        .hero-card {
+            background: #e8f5e9;
+            border: 2px solid #1b5e20;
+            padding: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #000;
+            margin-bottom: 10px;
+        }
+        
+        .hero-text { font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
+        .hero-num { font-size: 1.8rem; font-weight: 800; color: #1b5e20; }
+
+        .sub-card {
+            background: #f0f0f0;
+            border: 1px solid #999;
+            padding: 12px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .sub-num { font-weight: 800; font-size: 1.1rem; }
+
+    </style>
+
+    <!-- 3. HTML Structure -->
+    <div class="oer-panel-left">
+        <h2>OER Impact Calculator</h2>
+        <div class="oer-desc">
+            Calculate the cumulative student savings or costs by adopting Open Educational Resources (OER).
+        </div>
+        
+        <div class="input-group">
+            <label for="inp-curr">Current Textbook Price ($)</label>
+            <input type="number" id="inp-curr" value="185" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="inp-alt">Alternative Low-Cost Price ($)</label>
+            <input type="number" id="inp-alt" value="75" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="inp-stu">Students per Semester</label>
+            <input type="number" id="inp-stu" value="30" min="1">
+        </div>
+
+        <div class="input-group">
+            <label for="inp-sem">Duration (Semesters)</label>
+            <input type="number" id="inp-sem" value="3" min="1" max="15">
+        </div>
+
+        <fieldset>
+            <legend>Visualization Perspective</legend>
+            <div class="radio-flex">
+                <div class="custom-radio">
+                    <input type="radio" name="viewMode" id="mode-save" value="savings" checked>
+                    <div class="radio-tile">Savings</div>
+                </div>
+                <div class="custom-radio">
+                    <input type="radio" name="viewMode" id="mode-cost" value="costs">
+                    <div class="radio-tile">Costs</div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="oer-panel-right">
+        <div class="viz-header">
+            <div class="viz-title" id="viz-heading" role="heading" aria-level="3">Cumulative Savings</div>
+            
+            <label class="toggle-wrapper">
+                <span>Line</span>
+                <input type="checkbox" id="type-toggle">
+                <div class="toggle-bg"><div class="toggle-dot"></div></div>
+                <span>Bar</span>
+            </label>
+        </div>
+
+        <div class="chart-box">
+            <canvas id="a11yCanvas" aria-label="Visualization graph. Please refer to the table below for data." role="img"></canvas>
+        </div>
+
+        <!-- Screen Reader Data Table (Visually Hidden) -->
+        <div class="sr-only" aria-live="polite">
+            <table id="sr-data-table">
+                <caption>Graph Data Values</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Semester</th>
+                        <th scope="col" id="th-oer">OER</th>
+                        <th scope="col" id="th-alt">Alternative</th>
+                        <th scope="col" id="th-curr">Current</th>
+                    </tr>
+                </thead>
+                <tbody id="sr-table-body"></tbody>
+            </table>
+        </div>
+
+        <!-- Live Region for Results -->
+        <div class="results-section" id="live-results" aria-live="polite" aria-atomic="true">
+            <!-- Injected via JS -->
+        </div>
+    </div>
+
+    <!-- 4. Logic -->
+    <script>
+        (function() {
+            // Check for Reduced Motion Preference
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const ctx = document.getElementById('a11yCanvas').getContext('2d');
+            
+            const ui = {
+                curr: document.getElementById('inp-curr'),
+                alt: document.getElementById('inp-alt'),
+                stu: document.getElementById('inp-stu'),
+                sem: document.getElementById('inp-sem'),
+                toggle: document.getElementById('type-toggle'),
+                heading: document.getElementById('viz-heading'),
+                results: document.getElementById('live-results'),
+                tbody: document.getElementById('sr-table-body')
+            };
+
+            const radios = document.querySelectorAll('input[name="viewMode"]');
+
+            let myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'OER (Open Ed)',
+                            data: [],
+                            borderColor: '#1b5e20', // Green
+                            backgroundColor: 'rgba(27, 94, 32, 0.7)',
+                            borderWidth: 3,
+                            pointStyle: 'rectRot',
+                            pointRadius: 6,
+                            tension: 0.2
+                        },
+                        {
+                            label: 'Alternative Option',
+                            data: [],
+                            borderColor: '#e65100', // Orange
+                            backgroundColor: 'rgba(230, 81, 0, 0.7)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            pointStyle: 'triangle',
+                            pointRadius: 6,
+                            tension: 0.2
+                        },
+                        {
+                            label: 'Current Book',
+                            data: [],
+                            borderColor: '#b71c1c', // Red
+                            backgroundColor: 'rgba(183, 28, 28, 0.7)',
+                            borderWidth: 3,
+                            pointStyle: 'circle',
+                            pointRadius: 6,
+                            tension: 0.2,
+                            hidden: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: prefersReducedMotion ? 0 : 750
+                    },
+                    layout: {
+                        padding: {
+                            left: 0,
+                            right: 10, /* Added padding specifically to help prevent edge clipping */
+                            top: 0,
+                            bottom: 0
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grace: '5%',
+                            ticks: { callback: (v) => '$' + v.toLocaleString() },
+                            title: { display: true, text: 'US Dollars ($)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Timeline (Semesters)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { 
+                            labels: { usePointStyle: true, color: '#000', font: { weight: 'bold' } } 
+                        },
+                        tooltip: {
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            callbacks: { label: (c) => c.dataset.label + ': $' + c.raw.toLocaleString() }
+                        }
+                    }
+                }
+            });
+
+            function update() {
+                const pCurr = parseFloat(ui.curr.value) || 0;
+                const pAlt = parseFloat(ui.alt.value) || 0;
+                const nStu = parseInt(ui.stu.value) || 0;
+                const nSem = parseInt(ui.sem.value) || 1;
+
+                let mode = 'savings';
+                radios.forEach(r => { if(r.checked) mode = r.value; });
+
+                const labels = [];
+                const dOER = [], dAlt = [], dCurr = [];
+                let runOER = 0, runAlt = 0, runCurr = 0;
+                let tableHTML = "";
+
+                // Per Semester Calculations
+                const savingSemOER = (pCurr - 0) * nStu;
+                const savingSemAlt = (pCurr - pAlt) * nStu;
+                
+                const costSemOER = 0;
+                const costSemAlt = pAlt * nStu;
+                const costSemCurr = pCurr * nStu;
+
+                for(let i=1; i<=nSem; i++) {
+                    labels.push('Sem ' + i);
+                    
+                    if(mode === 'savings') {
+                        runOER += savingSemOER;
+                        runAlt += savingSemAlt;
+                    } else {
+                        runOER += costSemOER;
+                        runAlt += costSemAlt;
+                        runCurr += costSemCurr;
+                    }
+
+                    dOER.push(runOER);
+                    dAlt.push(runAlt);
+                    dCurr.push(runCurr);
+
+                    tableHTML += `
+                        <tr>
+                            <td>Semester ${i}</td>
+                            <td>$${runOER.toLocaleString()}</td>
+                            <td>$${runAlt.toLocaleString()}</td>
+                            <td>$${(mode==='costs' ? runCurr : 0).toLocaleString()}</td>
+                        </tr>
+                    `;
+                }
+
+                ui.tbody.innerHTML = tableHTML;
+                myChart.data.labels = labels;
+
+                if(mode === 'savings') {
+                    // --- SAVINGS VIEW ---
+                    ui.heading.textContent = "Cumulative Savings Potential";
+                    
+                    myChart.data.datasets[0].label = "Savings with OER";
+                    myChart.data.datasets[0].data = dOER;
+                    myChart.data.datasets[0].hidden = false;
+
+                    myChart.data.datasets[1].label = "Savings with Alternative";
+                    myChart.data.datasets[1].data = dAlt;
+                    myChart.data.datasets[1].hidden = false;
+
+                    myChart.data.datasets[2].hidden = true;
+
+                    ui.results.innerHTML = `
+                        <div class="hero-card">
+                            <span class="hero-text">Total OER Savings</span>
+                            <span class="hero-num">$${runOER.toLocaleString()}</span>
+                        </div>
+                        <div class="sub-card">
+                            <span>Total Savings with Alternative</span>
+                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
+                        </div>
+                    `;
+                } else {
+                    // --- COSTS VIEW ---
+                    ui.heading.textContent = "Cumulative Student Costs";
+                    
+                    myChart.data.datasets[0].label = "Cost of OER ($0)";
+                    myChart.data.datasets[0].data = dOER;
+                    myChart.data.datasets[0].hidden = false;
+
+                    myChart.data.datasets[1].label = "Cost of Alternative";
+                    myChart.data.datasets[1].data = dAlt;
+                    myChart.data.datasets[1].hidden = false;
+
+                    myChart.data.datasets[2].label = "Cost of Current Book";
+                    myChart.data.datasets[2].data = dCurr;
+                    myChart.data.datasets[2].hidden = false;
+
+                    ui.results.innerHTML = `
+                        <div class="hero-card">
+                            <span class="hero-text">Cost of OER (Free)</span>
+                            <span class="hero-num">$0</span>
+                        </div>
+                        <div class="sub-card" style="border-left: 5px solid #e65100;">
+                            <span>Cost of Alternative Option</span>
+                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
+                        </div>
+                        <div class="sub-card" style="border-left: 5px solid #b71c1c;">
+                            <span>Cost of Current Book</span>
+                            <span class="sub-num">$${runCurr.toLocaleString()}</span>
+                        </div>
+                    `;
+                }
+
+                const isBar = ui.toggle.checked;
+                myChart.config.type = isBar ? 'bar' : 'line';
+                
+                // IMPORTANT FIX: 
+                // When chart type is 'bar', we must set offset: true to prevent bars from being cut off.
+                // When chart type is 'line', offset: false (or standard) places points on the axis lines.
+                myChart.options.scales.x.offset = isBar;
+
+                myChart.data.datasets.forEach(ds => ds.fill = isBar);
+                
+                myChart.update();
+            }
+
+            [ui.curr, ui.alt, ui.stu, ui.sem, ui.toggle].forEach(el => {
+                el.addEventListener('input', update);
+                el.addEventListener('change', update);
+            });
+            radios.forEach(r => r.addEventListener('change', update));
+
+            update();
+        })();
+    </script>
+</div>
+
+<!-- END WIDGET CODE -->
+This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
