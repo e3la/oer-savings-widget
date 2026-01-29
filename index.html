@@ -3,676 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibGuide OER Cost Savings Calculator Widget Preview</title>
+    <title>OER Impact Calculator Widget</title>
     <style>
+        /* --- PAGE LAYOUT STYLES (Does not affect widget) --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
             background-color: #f4f6f8;
             color: #333;
-        }
-        h1 { text-align: center; color: #2c3e50; }
-        p.desc { text-align: center; color: #666; margin-bottom: 40px; }
-        
-        /* Container for the blocks */
-        .container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow: hidden;
-            margin-bottom: 30px;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
         }
 
-        /* Section Headers */
-        .section-header {
-            background-color: #0056b3; /* Adjust color to match your library branding */
-            color: white;
+        .main-container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h1 { margin-top: 0; color: #1b5e20; }
+        p.subtitle { color: #666; margin-bottom: 30px; }
+
+        /* Box Containers */
+        .section-box {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            margin-bottom: 50px;
+        }
+
+        .header-bar {
             padding: 12px 20px;
-            font-weight: bold;
-            font-size: 1.1em;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #ddd;
         }
 
-        /* Preview Area */
-        .preview-box {
-            padding: 30px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: center;
-            background-color: #ffffff;
-        }
+        .header-title { font-weight: bold; font-size: 1.1em; }
 
-        /* Code Area */
-        .code-box {
-            position: relative;
-            background-color: #2d2d2d;
-            color: #f8f8f2;
+        /* Top Code Box Styling */
+        .code-header { background-color: #2d2d2d; color: #fff; border-bottom: 1px solid #444; }
+        
+        .code-content {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
             padding: 20px;
             overflow-x: auto;
+            max-height: 400px; /* Limits height so preview isn't too far down */
+            overflow-y: auto;
         }
 
         pre { margin: 0; }
         code {
             font-family: "Consolas", "Monaco", "Courier New", monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            white-space: pre-wrap; /* Wraps text so it doesn't scroll horizontally forever */
-            word-break: break-all;
+            font-size: 13px;
+            white-space: pre; /* Keeps code formatting exact */
         }
 
         /* Copy Button */
         .copy-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background-color: #007bff;
             color: white;
-            padding: 6px 12px;
+            border: none;
+            padding: 6px 14px;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: 600;
             font-size: 0.9em;
-            transition: background 0.2s;
         }
-        .copy-btn:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-        }
-        .copy-btn.copied {
-            background-color: #28a745;
-            border-color: #28a745;
+        .copy-btn:hover { background-color: #0056b3; }
+        .copy-btn.copied { background-color: #28a745; }
+
+        /* Preview Box Styling */
+        .preview-header { background-color: #f8f9fa; color: #333; }
+        .preview-content {
+            padding: 40px;
+            background-color: #fff;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Library Widget Showcase</h1>
-    <p class="desc">Copy the code below to embed this resource on your own LibGuide.</p>
+<div class="main-container">
 
-    <!-- WIDGET BLOCK START -->
-    <div class="container">
-        
-        <!-- 1. LIVE PREVIEW SECTION -->
-        <div class="section-header">Live Preview</div>
-        <div class="preview-box">
-            <!-- START FIXED OER WIDGET -->
-<div id="oer-a11y-widget">
+    <h1>OER Impact Calculator</h1>
+    <p class="subtitle">Copy the code from the box below to add this widget to your LibGuide.</p>
 
-    <!-- 1. Load Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- 2. CSS Styles -->
-    <style>
-        #oer-a11y-widget {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            max-width: 100%;
-            margin: 0 auto;
-            background: #ffffff;
-            border: 1px solid #767676;
-            border-radius: 8px;
-            display: flex;
-            flex-wrap: wrap;
-            color: #222;
-        }
-
-        /* SCREEN READER ONLY CLASS */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
-        /* LEFT PANEL */
-        .oer-panel-left {
-            flex: 1;
-            min-width: 300px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-right: 1px solid #ccc;
-        }
-
-        h2 {
-            margin: 0 0 10px 0;
-            color: #1b5e20;
-            font-size: 1.4rem;
-        }
-
-        .oer-desc {
-            font-size: 0.95rem;
-            color: #444;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 15px;
-        }
-
-        /* FORM CONTROLS */
-        .input-group { margin-bottom: 15px; }
-        
-        label {
-            display: block;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #222;
-        }
-
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #555;
-            border-radius: 4px;
-            font-size: 1rem;
-            background: #fff;
-            color: #000;
-        }
-
-        input[type="number"]:focus {
-            outline: 3px solid #005fcc;
-            border-color: #005fcc;
-        }
-
-        /* ACCESSIBLE RADIO BUTTONS */
-        fieldset {
-            border: 0;
-            padding: 0;
-            margin: 20px 0 0 0;
-            border-top: 1px solid #ccc;
-            padding-top: 15px;
-        }
-
-        legend {
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: block;
-            width: 100%;
-        }
-
-        .radio-flex { display: flex; gap: 10px; }
-
-        .custom-radio {
-            position: relative;
-            flex: 1;
-        }
-
-        .custom-radio input {
-            opacity: 0;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            z-index: 1;
-        }
-
-        .radio-tile {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            background: #fff;
-            border: 2px solid #555;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .custom-radio input:focus + .radio-tile {
-            outline: 3px solid #005fcc;
-            border-color: #005fcc;
-        }
-
-        .custom-radio input:checked + .radio-tile {
-            background-color: #1b5e20;
-            color: #fff;
-            border-color: #1b5e20;
-        }
-
-        /* RIGHT PANEL */
-        .oer-panel-right {
-            flex: 1.5;
-            min-width: 320px;
-            padding: 20px;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .viz-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .viz-title {
-            font-weight: 800;
-            color: #1b5e20;
-            font-size: 1.1rem;
-        }
-
-        /* TOGGLE SWITCH */
-        .toggle-wrapper {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        
-        .toggle-wrapper input {
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        .toggle-bg {
-            width: 40px; height: 22px;
-            background: #555;
-            border-radius: 20px;
-            margin: 0 8px;
-            position: relative;
-        }
-        
-        .toggle-dot {
-            width: 16px; height: 16px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: 3px; left: 3px;
-            transition: transform 0.2s;
-        }
-
-        .toggle-wrapper input:checked ~ .toggle-bg { background: #1b5e20; }
-        .toggle-wrapper input:checked ~ .toggle-bg .toggle-dot { transform: translateX(18px); }
-        .toggle-wrapper input:focus ~ .toggle-bg { outline: 3px solid #005fcc; }
-
-        .chart-box {
-            position: relative;
-            flex-grow: 1;
-            min-height: 300px;
-            width: 100%;
-            /* Extra padding to ensure labels don't clip */
-            padding-right: 5px; 
-            padding-left: 5px;
-        }
-
-        /* RESULTS CARDS */
-        .results-section { margin-top: 20px; }
-        
-        .hero-card {
-            background: #e8f5e9;
-            border: 2px solid #1b5e20;
-            padding: 15px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #000;
-            margin-bottom: 10px;
-        }
-        
-        .hero-text { font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
-        .hero-num { font-size: 1.8rem; font-weight: 800; color: #1b5e20; }
-
-        .sub-card {
-            background: #f0f0f0;
-            border: 1px solid #999;
-            padding: 12px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #222;
-            margin-bottom: 10px;
-        }
-        .sub-num { font-weight: 800; font-size: 1.1rem; }
-
-    </style>
-
-    <!-- 3. HTML Structure -->
-    <div class="oer-panel-left">
-        <h2>OER Impact Calculator</h2>
-        <div class="oer-desc">
-            Calculate the cumulative student savings or costs by adopting Open Educational Resources (OER).
-        </div>
-        
-        <div class="input-group">
-            <label for="inp-curr">Current Textbook Price ($)</label>
-            <input type="number" id="inp-curr" value="185" min="0">
-        </div>
-
-        <div class="input-group">
-            <label for="inp-alt">Alternative Low-Cost Price ($)</label>
-            <input type="number" id="inp-alt" value="75" min="0">
-        </div>
-
-        <div class="input-group">
-            <label for="inp-stu">Students per Semester</label>
-            <input type="number" id="inp-stu" value="30" min="1">
-        </div>
-
-        <div class="input-group">
-            <label for="inp-sem">Duration (Semesters)</label>
-            <input type="number" id="inp-sem" value="3" min="1" max="15">
-        </div>
-
-        <fieldset>
-            <legend>Visualization Perspective</legend>
-            <div class="radio-flex">
-                <div class="custom-radio">
-                    <input type="radio" name="viewMode" id="mode-save" value="savings" checked>
-                    <div class="radio-tile">Savings</div>
-                </div>
-                <div class="custom-radio">
-                    <input type="radio" name="viewMode" id="mode-cost" value="costs">
-                    <div class="radio-tile">Costs</div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-    <div class="oer-panel-right">
-        <div class="viz-header">
-            <div class="viz-title" id="viz-heading" role="heading" aria-level="3">Cumulative Savings</div>
-            
-            <label class="toggle-wrapper">
-                <span>Line</span>
-                <input type="checkbox" id="type-toggle">
-                <div class="toggle-bg"><div class="toggle-dot"></div></div>
-                <span>Bar</span>
-            </label>
-        </div>
-
-        <div class="chart-box">
-            <canvas id="a11yCanvas" aria-label="Visualization graph. Please refer to the table below for data." role="img"></canvas>
-        </div>
-
-        <!-- Screen Reader Data Table (Visually Hidden) -->
-        <div class="sr-only" aria-live="polite">
-            <table id="sr-data-table">
-                <caption>Graph Data Values</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Semester</th>
-                        <th scope="col" id="th-oer">OER</th>
-                        <th scope="col" id="th-alt">Alternative</th>
-                        <th scope="col" id="th-curr">Current</th>
-                    </tr>
-                </thead>
-                <tbody id="sr-table-body"></tbody>
-            </table>
-        </div>
-
-        <!-- Live Region for Results -->
-        <div class="results-section" id="live-results" aria-live="polite" aria-atomic="true">
-            <!-- Injected via JS -->
-        </div>
-    </div>
-
-    <!-- 4. Logic -->
-    <script>
-        (function() {
-            // Check for Reduced Motion Preference
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            const ctx = document.getElementById('a11yCanvas').getContext('2d');
-            
-            const ui = {
-                curr: document.getElementById('inp-curr'),
-                alt: document.getElementById('inp-alt'),
-                stu: document.getElementById('inp-stu'),
-                sem: document.getElementById('inp-sem'),
-                toggle: document.getElementById('type-toggle'),
-                heading: document.getElementById('viz-heading'),
-                results: document.getElementById('live-results'),
-                tbody: document.getElementById('sr-table-body')
-            };
-
-            const radios = document.querySelectorAll('input[name="viewMode"]');
-
-            let myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: 'OER (Open Ed)',
-                            data: [],
-                            borderColor: '#1b5e20', // Green
-                            backgroundColor: 'rgba(27, 94, 32, 0.7)',
-                            borderWidth: 3,
-                            pointStyle: 'rectRot',
-                            pointRadius: 6,
-                            tension: 0.2
-                        },
-                        {
-                            label: 'Alternative Option',
-                            data: [],
-                            borderColor: '#e65100', // Orange
-                            backgroundColor: 'rgba(230, 81, 0, 0.7)',
-                            borderWidth: 3,
-                            borderDash: [5, 5],
-                            pointStyle: 'triangle',
-                            pointRadius: 6,
-                            tension: 0.2
-                        },
-                        {
-                            label: 'Current Book',
-                            data: [],
-                            borderColor: '#b71c1c', // Red
-                            backgroundColor: 'rgba(183, 28, 28, 0.7)',
-                            borderWidth: 3,
-                            pointStyle: 'circle',
-                            pointRadius: 6,
-                            tension: 0.2,
-                            hidden: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: prefersReducedMotion ? 0 : 750
-                    },
-                    layout: {
-                        padding: {
-                            left: 0,
-                            right: 10, /* Added padding specifically to help prevent edge clipping */
-                            top: 0,
-                            bottom: 0
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grace: '5%',
-                            ticks: { callback: (v) => '$' + v.toLocaleString() },
-                            title: { display: true, text: 'US Dollars ($)' }
-                        },
-                        x: {
-                            title: { display: true, text: 'Timeline (Semesters)' }
-                        }
-                    },
-                    plugins: {
-                        legend: { 
-                            labels: { usePointStyle: true, color: '#000', font: { weight: 'bold' } } 
-                        },
-                        tooltip: {
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            callbacks: { label: (c) => c.dataset.label + ': $' + c.raw.toLocaleString() }
-                        }
-                    }
-                }
-            });
-
-            function update() {
-                const pCurr = parseFloat(ui.curr.value) || 0;
-                const pAlt = parseFloat(ui.alt.value) || 0;
-                const nStu = parseInt(ui.stu.value) || 0;
-                const nSem = parseInt(ui.sem.value) || 1;
-
-                let mode = 'savings';
-                radios.forEach(r => { if(r.checked) mode = r.value; });
-
-                const labels = [];
-                const dOER = [], dAlt = [], dCurr = [];
-                let runOER = 0, runAlt = 0, runCurr = 0;
-                let tableHTML = "";
-
-                // Per Semester Calculations
-                const savingSemOER = (pCurr - 0) * nStu;
-                const savingSemAlt = (pCurr - pAlt) * nStu;
-                
-                const costSemOER = 0;
-                const costSemAlt = pAlt * nStu;
-                const costSemCurr = pCurr * nStu;
-
-                for(let i=1; i<=nSem; i++) {
-                    labels.push('Sem ' + i);
-                    
-                    if(mode === 'savings') {
-                        runOER += savingSemOER;
-                        runAlt += savingSemAlt;
-                    } else {
-                        runOER += costSemOER;
-                        runAlt += costSemAlt;
-                        runCurr += costSemCurr;
-                    }
-
-                    dOER.push(runOER);
-                    dAlt.push(runAlt);
-                    dCurr.push(runCurr);
-
-                    tableHTML += `
-                        <tr>
-                            <td>Semester ${i}</td>
-                            <td>$${runOER.toLocaleString()}</td>
-                            <td>$${runAlt.toLocaleString()}</td>
-                            <td>$${(mode==='costs' ? runCurr : 0).toLocaleString()}</td>
-                        </tr>
-                    `;
-                }
-
-                ui.tbody.innerHTML = tableHTML;
-                myChart.data.labels = labels;
-
-                if(mode === 'savings') {
-                    // --- SAVINGS VIEW ---
-                    ui.heading.textContent = "Cumulative Savings Potential";
-                    
-                    myChart.data.datasets[0].label = "Savings with OER";
-                    myChart.data.datasets[0].data = dOER;
-                    myChart.data.datasets[0].hidden = false;
-
-                    myChart.data.datasets[1].label = "Savings with Alternative";
-                    myChart.data.datasets[1].data = dAlt;
-                    myChart.data.datasets[1].hidden = false;
-
-                    myChart.data.datasets[2].hidden = true;
-
-                    ui.results.innerHTML = `
-                        <div class="hero-card">
-                            <span class="hero-text">Total OER Savings</span>
-                            <span class="hero-num">$${runOER.toLocaleString()}</span>
-                        </div>
-                        <div class="sub-card">
-                            <span>Total Savings with Alternative</span>
-                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
-                        </div>
-                    `;
-                } else {
-                    // --- COSTS VIEW ---
-                    ui.heading.textContent = "Cumulative Student Costs";
-                    
-                    myChart.data.datasets[0].label = "Cost of OER ($0)";
-                    myChart.data.datasets[0].data = dOER;
-                    myChart.data.datasets[0].hidden = false;
-
-                    myChart.data.datasets[1].label = "Cost of Alternative";
-                    myChart.data.datasets[1].data = dAlt;
-                    myChart.data.datasets[1].hidden = false;
-
-                    myChart.data.datasets[2].label = "Cost of Current Book";
-                    myChart.data.datasets[2].data = dCurr;
-                    myChart.data.datasets[2].hidden = false;
-
-                    ui.results.innerHTML = `
-                        <div class="hero-card">
-                            <span class="hero-text">Cost of OER (Free)</span>
-                            <span class="hero-num">$0</span>
-                        </div>
-                        <div class="sub-card" style="border-left: 5px solid #e65100;">
-                            <span>Cost of Alternative Option</span>
-                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
-                        </div>
-                        <div class="sub-card" style="border-left: 5px solid #b71c1c;">
-                            <span>Cost of Current Book</span>
-                            <span class="sub-num">$${runCurr.toLocaleString()}</span>
-                        </div>
-                    `;
-                }
-
-                const isBar = ui.toggle.checked;
-                myChart.config.type = isBar ? 'bar' : 'line';
-                
-                // IMPORTANT FIX: 
-                // When chart type is 'bar', we must set offset: true to prevent bars from being cut off.
-                // When chart type is 'line', offset: false (or standard) places points on the axis lines.
-                myChart.options.scales.x.offset = isBar;
-
-                myChart.data.datasets.forEach(ds => ds.fill = isBar);
-                
-                myChart.update();
-            }
-
-            [ui.curr, ui.alt, ui.stu, ui.sem, ui.toggle].forEach(el => {
-                el.addEventListener('input', update);
-                el.addEventListener('change', update);
-            });
-            radios.forEach(r => r.addEventListener('change', update));
-
-            update();
-        })();
-    </script>
-</div>
-
-<!-- END WIDGET CODE -->
-This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
-            
-            
-            <div id="api_search_widget_123"></div>
-            <script>
-                // Example placeholder code - DELETE THIS and paste your real widget code above
-                document.getElementById('api_search_widget_123').innerHTML = "<strong>Search Widget Loaded...</strong>";
-            </script>
-
-            <!-- END PREVIEW CODE -->
-        </div>
-
-        <!-- 2. RAW CODE SECTION -->
-        <div class="section-header">
-            <span>Embed Code</span>
+    <!-- SECTION 1: THE CODE BOX -->
+    <div class="section-box">
+        <div class="header-bar code-header">
+            <span class="header-title">&#60;/&#62; Embed Code</span>
             <button class="copy-btn" onclick="copyCode()">Copy Code</button>
         </div>
-        <div class="code-box">
-<pre><code id="widget-code">
-<!-- START FIXED OER WIDGET -->
-<div id="oer-a11y-widget">
+        <div class="code-content">
+<pre><code id="raw-code">&lt;!-- START FIXED OER WIDGET --&gt;
+&lt;div id="oer-a11y-widget"&gt;
 
-    <!-- 1. Load Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    &lt;!-- 1. Load Chart.js --&gt;
+    &lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;
 
-    <!-- 2. CSS Styles -->
-    <style>
+    &lt;!-- 2. CSS Styles --&gt;
+    &lt;style&gt;
         #oer-a11y-widget {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             max-width: 100%;
@@ -707,7 +141,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
             border-right: 1px solid #ccc;
         }
 
-        h2 {
+        #oer-a11y-widget h2 {
             margin: 0 0 10px 0;
             color: #1b5e20;
             font-size: 1.4rem;
@@ -724,14 +158,14 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
         /* FORM CONTROLS */
         .input-group { margin-bottom: 15px; }
         
-        label {
+        #oer-a11y-widget label {
             display: block;
             font-weight: 700;
             margin-bottom: 5px;
             color: #222;
         }
 
-        input[type="number"] {
+        #oer-a11y-widget input[type="number"] {
             width: 100%;
             padding: 10px;
             border: 2px solid #555;
@@ -739,15 +173,16 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
             font-size: 1rem;
             background: #fff;
             color: #000;
+            box-sizing: border-box; 
         }
 
-        input[type="number"]:focus {
+        #oer-a11y-widget input[type="number"]:focus {
             outline: 3px solid #005fcc;
             border-color: #005fcc;
         }
 
         /* ACCESSIBLE RADIO BUTTONS */
-        fieldset {
+        #oer-a11y-widget fieldset {
             border: 0;
             padding: 0;
             margin: 20px 0 0 0;
@@ -755,7 +190,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
             padding-top: 15px;
         }
 
-        legend {
+        #oer-a11y-widget legend {
             font-weight: 700;
             margin-bottom: 10px;
             display: block;
@@ -904,90 +339,90 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
         }
         .sub-num { font-weight: 800; font-size: 1.1rem; }
 
-    </style>
+    &lt;/style&gt;
 
-    <!-- 3. HTML Structure -->
-    <div class="oer-panel-left">
-        <h2>OER Impact Calculator</h2>
-        <div class="oer-desc">
+    &lt;!-- 3. HTML Structure --&gt;
+    &lt;div class="oer-panel-left"&gt;
+        &lt;h2&gt;OER Impact Calculator&lt;/h2&gt;
+        &lt;div class="oer-desc"&gt;
             Calculate the cumulative student savings or costs by adopting Open Educational Resources (OER).
-        </div>
+        &lt;/div&gt;
         
-        <div class="input-group">
-            <label for="inp-curr">Current Textbook Price ($)</label>
-            <input type="number" id="inp-curr" value="185" min="0">
-        </div>
+        &lt;div class="input-group"&gt;
+            &lt;label for="inp-curr"&gt;Current Textbook Price ($)&lt;/label&gt;
+            &lt;input type="number" id="inp-curr" value="185" min="0"&gt;
+        &lt;/div&gt;
 
-        <div class="input-group">
-            <label for="inp-alt">Alternative Low-Cost Price ($)</label>
-            <input type="number" id="inp-alt" value="75" min="0">
-        </div>
+        &lt;div class="input-group"&gt;
+            &lt;label for="inp-alt"&gt;Alternative Low-Cost Price ($)&lt;/label&gt;
+            &lt;input type="number" id="inp-alt" value="75" min="0"&gt;
+        &lt;/div&gt;
 
-        <div class="input-group">
-            <label for="inp-stu">Students per Semester</label>
-            <input type="number" id="inp-stu" value="30" min="1">
-        </div>
+        &lt;div class="input-group"&gt;
+            &lt;label for="inp-stu"&gt;Students per Semester&lt;/label&gt;
+            &lt;input type="number" id="inp-stu" value="30" min="1"&gt;
+        &lt;/div&gt;
 
-        <div class="input-group">
-            <label for="inp-sem">Duration (Semesters)</label>
-            <input type="number" id="inp-sem" value="3" min="1" max="15">
-        </div>
+        &lt;div class="input-group"&gt;
+            &lt;label for="inp-sem"&gt;Duration (Semesters)&lt;/label&gt;
+            &lt;input type="number" id="inp-sem" value="3" min="1" max="15"&gt;
+        &lt;/div&gt;
 
-        <fieldset>
-            <legend>Visualization Perspective</legend>
-            <div class="radio-flex">
-                <div class="custom-radio">
-                    <input type="radio" name="viewMode" id="mode-save" value="savings" checked>
-                    <div class="radio-tile">Savings</div>
-                </div>
-                <div class="custom-radio">
-                    <input type="radio" name="viewMode" id="mode-cost" value="costs">
-                    <div class="radio-tile">Costs</div>
-                </div>
-            </div>
-        </fieldset>
-    </div>
+        &lt;fieldset&gt;
+            &lt;legend&gt;Visualization Perspective&lt;/legend&gt;
+            &lt;div class="radio-flex"&gt;
+                &lt;div class="custom-radio"&gt;
+                    &lt;input type="radio" name="viewMode" id="mode-save" value="savings" checked&gt;
+                    &lt;div class="radio-tile"&gt;Savings&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="custom-radio"&gt;
+                    &lt;input type="radio" name="viewMode" id="mode-cost" value="costs"&gt;
+                    &lt;div class="radio-tile"&gt;Costs&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/fieldset&gt;
+    &lt;/div&gt;
 
-    <div class="oer-panel-right">
-        <div class="viz-header">
-            <div class="viz-title" id="viz-heading" role="heading" aria-level="3">Cumulative Savings</div>
+    &lt;div class="oer-panel-right"&gt;
+        &lt;div class="viz-header"&gt;
+            &lt;div class="viz-title" id="viz-heading" role="heading" aria-level="3"&gt;Cumulative Savings&lt;/div&gt;
             
-            <label class="toggle-wrapper">
-                <span>Line</span>
-                <input type="checkbox" id="type-toggle">
-                <div class="toggle-bg"><div class="toggle-dot"></div></div>
-                <span>Bar</span>
-            </label>
-        </div>
+            &lt;label class="toggle-wrapper"&gt;
+                &lt;span&gt;Line&lt;/span&gt;
+                &lt;input type="checkbox" id="type-toggle"&gt;
+                &lt;div class="toggle-bg"&gt;&lt;div class="toggle-dot"&gt;&lt;/div&gt;&lt;/div&gt;
+                &lt;span&gt;Bar&lt;/span&gt;
+            &lt;/label&gt;
+        &lt;/div&gt;
 
-        <div class="chart-box">
-            <canvas id="a11yCanvas" aria-label="Visualization graph. Please refer to the table below for data." role="img"></canvas>
-        </div>
+        &lt;div class="chart-box"&gt;
+            &lt;canvas id="a11yCanvas" aria-label="Visualization graph. Please refer to the table below for data." role="img"&gt;&lt;/canvas&gt;
+        &lt;/div&gt;
 
-        <!-- Screen Reader Data Table (Visually Hidden) -->
-        <div class="sr-only" aria-live="polite">
-            <table id="sr-data-table">
-                <caption>Graph Data Values</caption>
-                <thead>
-                    <tr>
-                        <th scope="col">Semester</th>
-                        <th scope="col" id="th-oer">OER</th>
-                        <th scope="col" id="th-alt">Alternative</th>
-                        <th scope="col" id="th-curr">Current</th>
-                    </tr>
-                </thead>
-                <tbody id="sr-table-body"></tbody>
-            </table>
-        </div>
+        &lt;!-- Screen Reader Data Table (Visually Hidden) --&gt;
+        &lt;div class="sr-only" aria-live="polite"&gt;
+            &lt;table id="sr-data-table"&gt;
+                &lt;caption&gt;Graph Data Values&lt;/caption&gt;
+                &lt;thead&gt;
+                    &lt;tr&gt;
+                        &lt;th scope="col"&gt;Semester&lt;/th&gt;
+                        &lt;th scope="col" id="th-oer"&gt;OER&lt;/th&gt;
+                        &lt;th scope="col" id="th-alt"&gt;Alternative&lt;/th&gt;
+                        &lt;th scope="col" id="th-curr"&gt;Current&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody id="sr-table-body"&gt;&lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
 
-        <!-- Live Region for Results -->
-        <div class="results-section" id="live-results" aria-live="polite" aria-atomic="true">
-            <!-- Injected via JS -->
-        </div>
-    </div>
+        &lt;!-- Live Region for Results --&gt;
+        &lt;div class="results-section" id="live-results" aria-live="polite" aria-atomic="true"&gt;
+            &lt;!-- Injected via JS --&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
 
-    <!-- 4. Logic -->
-    <script>
+    &lt;!-- 4. Logic --&gt;
+    &lt;script&gt;
         (function() {
             // Check for Reduced Motion Preference
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1064,7 +499,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                         y: {
                             beginAtZero: true,
                             grace: '5%',
-                            ticks: { callback: (v) => '$' + v.toLocaleString() },
+                            ticks: { callback: (v) =&gt; '$' + v.toLocaleString() },
                             title: { display: true, text: 'US Dollars ($)' }
                         },
                         x: {
@@ -1078,7 +513,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                         tooltip: {
                             titleColor: '#fff',
                             bodyColor: '#fff',
-                            callbacks: { label: (c) => c.dataset.label + ': $' + c.raw.toLocaleString() }
+                            callbacks: { label: (c) =&gt; c.dataset.label + ': $' + c.raw.toLocaleString() }
                         }
                     }
                 }
@@ -1091,7 +526,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                 const nSem = parseInt(ui.sem.value) || 1;
 
                 let mode = 'savings';
-                radios.forEach(r => { if(r.checked) mode = r.value; });
+                radios.forEach(r =&gt; { if(r.checked) mode = r.value; });
 
                 const labels = [];
                 const dOER = [], dAlt = [], dCurr = [];
@@ -1106,7 +541,7 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                 const costSemAlt = pAlt * nStu;
                 const costSemCurr = pCurr * nStu;
 
-                for(let i=1; i<=nSem; i++) {
+                for(let i=1; i&lt;=nSem; i++) {
                     labels.push('Sem ' + i);
                     
                     if(mode === 'savings') {
@@ -1123,12 +558,12 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                     dCurr.push(runCurr);
 
                     tableHTML += `
-                        <tr>
-                            <td>Semester ${i}</td>
-                            <td>$${runOER.toLocaleString()}</td>
-                            <td>$${runAlt.toLocaleString()}</td>
-                            <td>$${(mode==='costs' ? runCurr : 0).toLocaleString()}</td>
-                        </tr>
+                        &lt;tr&gt;
+                            &lt;td&gt;Semester ${i}&lt;/td&gt;
+                            &lt;td&gt;$${runOER.toLocaleString()}&lt;/td&gt;
+                            &lt;td&gt;$${runAlt.toLocaleString()}&lt;/td&gt;
+                            &lt;td&gt;$${(mode==='costs' ? runCurr : 0).toLocaleString()}&lt;/td&gt;
+                        &lt;/tr&gt;
                     `;
                 }
 
@@ -1150,14 +585,14 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                     myChart.data.datasets[2].hidden = true;
 
                     ui.results.innerHTML = `
-                        <div class="hero-card">
-                            <span class="hero-text">Total OER Savings</span>
-                            <span class="hero-num">$${runOER.toLocaleString()}</span>
-                        </div>
-                        <div class="sub-card">
-                            <span>Total Savings with Alternative</span>
-                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
-                        </div>
+                        &lt;div class="hero-card"&gt;
+                            &lt;span class="hero-text"&gt;Total OER Savings&lt;/span&gt;
+                            &lt;span class="hero-num"&gt;$${runOER.toLocaleString()}&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="sub-card"&gt;
+                            &lt;span&gt;Total Savings with Alternative&lt;/span&gt;
+                            &lt;span class="sub-num"&gt;$${runAlt.toLocaleString()}&lt;/span&gt;
+                        &lt;/div&gt;
                     `;
                 } else {
                     // --- COSTS VIEW ---
@@ -1176,18 +611,18 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                     myChart.data.datasets[2].hidden = false;
 
                     ui.results.innerHTML = `
-                        <div class="hero-card">
-                            <span class="hero-text">Cost of OER (Free)</span>
-                            <span class="hero-num">$0</span>
-                        </div>
-                        <div class="sub-card" style="border-left: 5px solid #e65100;">
-                            <span>Cost of Alternative Option</span>
-                            <span class="sub-num">$${runAlt.toLocaleString()}</span>
-                        </div>
-                        <div class="sub-card" style="border-left: 5px solid #b71c1c;">
-                            <span>Cost of Current Book</span>
-                            <span class="sub-num">$${runCurr.toLocaleString()}</span>
-                        </div>
+                        &lt;div class="hero-card"&gt;
+                            &lt;span class="hero-text"&gt;Cost of OER (Free)&lt;/span&gt;
+                            &lt;span class="hero-num"&gt;$0&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="sub-card" style="border-left: 5px solid #e65100;"&gt;
+                            &lt;span&gt;Cost of Alternative Option&lt;/span&gt;
+                            &lt;span class="sub-num"&gt;$${runAlt.toLocaleString()}&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class="sub-card" style="border-left: 5px solid #b71c1c;"&gt;
+                            &lt;span&gt;Cost of Current Book&lt;/span&gt;
+                            &lt;span class="sub-num"&gt;$${runCurr.toLocaleString()}&lt;/span&gt;
+                        &lt;/div&gt;
                     `;
                 }
 
@@ -1199,52 +634,617 @@ This widget was created with Google Gemini by Helena Marvin and you can see <a h
                 // When chart type is 'line', offset: false (or standard) places points on the axis lines.
                 myChart.options.scales.x.offset = isBar;
 
-                myChart.data.datasets.forEach(ds => ds.fill = isBar);
+                myChart.data.datasets.forEach(ds =&gt; ds.fill = isBar);
                 
                 myChart.update();
             }
 
-            [ui.curr, ui.alt, ui.stu, ui.sem, ui.toggle].forEach(el => {
+            [ui.curr, ui.alt, ui.stu, ui.sem, ui.toggle].forEach(el =&gt; {
                 el.addEventListener('input', update);
                 el.addEventListener('change', update);
             });
-            radios.forEach(r => r.addEventListener('change', update));
+            radios.forEach(r =&gt; r.addEventListener('change', update));
 
             update();
         })();
-    </script>
-</div>
+    &lt;/script&gt;
+&lt;/div&gt;
 
-<!-- END WIDGET CODE -->
-This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.
+&lt;!-- END WIDGET CODE --&gt;
+This widget was created with Google Gemini by Helena Marvin and you can see &lt;a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing"&gt;the prompt here.&lt;/a&gt; Much thanks to the chart.js library under the the MIT License.
 </code></pre>
         </div>
     </div>
-    <!-- WIDGET BLOCK END -->
 
-    <script>
-        function copyCode() {
-            // Select the code block
-            const codeText = document.getElementById("widget-code").innerText;
+    <!-- SECTION 2: LIVE PREVIEW -->
+    <div class="section-box">
+        <div class="header-bar preview-header">
+            <span class="header-title">👁 Widget Preview</span>
+        </div>
+        <div class="preview-content">
             
-            // Copy to clipboard
-            navigator.clipboard.writeText(codeText).then(() => {
-                // Change button text temporarily
-                const btn = document.querySelector(".copy-btn");
-                const originalText = btn.innerText;
-                
-                btn.innerText = "Copied!";
-                btn.classList.add("copied");
-                
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.classList.remove("copied");
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        }
-    </script>
-<br> This page was crafted with Gemini by Helena Marvin and <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221rH2boDFWd_kzQVlkzX2geEnat11TOEg5%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt can be found here</a>.
+            <!-- START FIXED OER WIDGET -->
+            <div id="oer-a11y-widget">
+
+                <!-- 1. Load Chart.js -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <!-- 2. CSS Styles -->
+                <style>
+                    #oer-a11y-widget {
+                        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+                        max-width: 100%;
+                        margin: 0 auto;
+                        background: #ffffff;
+                        border: 1px solid #767676;
+                        border-radius: 8px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        color: #222;
+                    }
+
+                    /* SCREEN READER ONLY CLASS */
+                    .sr-only {
+                        position: absolute;
+                        width: 1px;
+                        height: 1px;
+                        padding: 0;
+                        margin: -1px;
+                        overflow: hidden;
+                        clip: rect(0, 0, 0, 0);
+                        white-space: nowrap;
+                        border: 0;
+                    }
+
+                    /* LEFT PANEL */
+                    .oer-panel-left {
+                        flex: 1;
+                        min-width: 300px;
+                        padding: 20px;
+                        background-color: #f4f4f4;
+                        border-right: 1px solid #ccc;
+                    }
+
+                    #oer-a11y-widget h2 {
+                        margin: 0 0 10px 0;
+                        color: #1b5e20;
+                        font-size: 1.4rem;
+                    }
+
+                    .oer-desc {
+                        font-size: 0.95rem;
+                        color: #444;
+                        margin-bottom: 20px;
+                        border-bottom: 2px solid #ccc;
+                        padding-bottom: 15px;
+                    }
+
+                    /* FORM CONTROLS */
+                    .input-group { margin-bottom: 15px; }
+                    
+                    #oer-a11y-widget label {
+                        display: block;
+                        font-weight: 700;
+                        margin-bottom: 5px;
+                        color: #222;
+                    }
+
+                    #oer-a11y-widget input[type="number"] {
+                        width: 100%;
+                        padding: 10px;
+                        border: 2px solid #555;
+                        border-radius: 4px;
+                        font-size: 1rem;
+                        background: #fff;
+                        color: #000;
+                        box-sizing: border-box; /* ADDED FIX for widths */
+                    }
+
+                    #oer-a11y-widget input[type="number"]:focus {
+                        outline: 3px solid #005fcc;
+                        border-color: #005fcc;
+                    }
+
+                    /* ACCESSIBLE RADIO BUTTONS */
+                    #oer-a11y-widget fieldset {
+                        border: 0;
+                        padding: 0;
+                        margin: 20px 0 0 0;
+                        border-top: 1px solid #ccc;
+                        padding-top: 15px;
+                    }
+
+                    #oer-a11y-widget legend {
+                        font-weight: 700;
+                        margin-bottom: 10px;
+                        display: block;
+                        width: 100%;
+                    }
+
+                    .radio-flex { display: flex; gap: 10px; }
+
+                    .custom-radio {
+                        position: relative;
+                        flex: 1;
+                    }
+
+                    .custom-radio input {
+                        opacity: 0;
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        cursor: pointer;
+                        z-index: 1;
+                    }
+
+                    .radio-tile {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 10px;
+                        background: #fff;
+                        border: 2px solid #555;
+                        border-radius: 4px;
+                        font-weight: 600;
+                        transition: all 0.2s;
+                    }
+
+                    .custom-radio input:focus + .radio-tile {
+                        outline: 3px solid #005fcc;
+                        border-color: #005fcc;
+                    }
+
+                    .custom-radio input:checked + .radio-tile {
+                        background-color: #1b5e20;
+                        color: #fff;
+                        border-color: #1b5e20;
+                    }
+
+                    /* RIGHT PANEL */
+                    .oer-panel-right {
+                        flex: 1.5;
+                        min-width: 320px;
+                        padding: 20px;
+                        background: #fff;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .viz-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 10px;
+                    }
+
+                    .viz-title {
+                        font-weight: 800;
+                        color: #1b5e20;
+                        font-size: 1.1rem;
+                    }
+
+                    /* TOGGLE SWITCH */
+                    .toggle-wrapper {
+                        position: relative;
+                        display: inline-flex;
+                        align-items: center;
+                        font-weight: 600;
+                        font-size: 0.9rem;
+                    }
+                    
+                    .toggle-wrapper input {
+                        opacity: 0;
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        z-index: 2;
+                        cursor: pointer;
+                    }
+
+                    .toggle-bg {
+                        width: 40px; height: 22px;
+                        background: #555;
+                        border-radius: 20px;
+                        margin: 0 8px;
+                        position: relative;
+                    }
+                    
+                    .toggle-dot {
+                        width: 16px; height: 16px;
+                        background: #fff;
+                        border-radius: 50%;
+                        position: absolute;
+                        top: 3px; left: 3px;
+                        transition: transform 0.2s;
+                    }
+
+                    .toggle-wrapper input:checked ~ .toggle-bg { background: #1b5e20; }
+                    .toggle-wrapper input:checked ~ .toggle-bg .toggle-dot { transform: translateX(18px); }
+                    .toggle-wrapper input:focus ~ .toggle-bg { outline: 3px solid #005fcc; }
+
+                    .chart-box {
+                        position: relative;
+                        flex-grow: 1;
+                        min-height: 300px;
+                        width: 100%;
+                        /* Extra padding to ensure labels don't clip */
+                        padding-right: 5px; 
+                        padding-left: 5px;
+                    }
+
+                    /* RESULTS CARDS */
+                    .results-section { margin-top: 20px; }
+                    
+                    .hero-card {
+                        background: #e8f5e9;
+                        border: 2px solid #1b5e20;
+                        padding: 15px;
+                        border-radius: 6px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: #000;
+                        margin-bottom: 10px;
+                    }
+                    
+                    .hero-text { font-weight: 700; text-transform: uppercase; font-size: 0.9rem; }
+                    .hero-num { font-size: 1.8rem; font-weight: 800; color: #1b5e20; }
+
+                    .sub-card {
+                        background: #f0f0f0;
+                        border: 1px solid #999;
+                        padding: 12px;
+                        border-radius: 6px;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        color: #222;
+                        margin-bottom: 10px;
+                    }
+                    .sub-num { font-weight: 800; font-size: 1.1rem; }
+
+                </style>
+
+                <!-- 3. HTML Structure -->
+                <div class="oer-panel-left">
+                    <h2>OER Impact Calculator</h2>
+                    <div class="oer-desc">
+                        Calculate the cumulative student savings or costs by adopting Open Educational Resources (OER).
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="inp-curr">Current Textbook Price ($)</label>
+                        <input type="number" id="inp-curr" value="185" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="inp-alt">Alternative Low-Cost Price ($)</label>
+                        <input type="number" id="inp-alt" value="75" min="0">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="inp-stu">Students per Semester</label>
+                        <input type="number" id="inp-stu" value="30" min="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="inp-sem">Duration (Semesters)</label>
+                        <input type="number" id="inp-sem" value="3" min="1" max="15">
+                    </div>
+
+                    <fieldset>
+                        <legend>Visualization Perspective</legend>
+                        <div class="radio-flex">
+                            <div class="custom-radio">
+                                <input type="radio" name="viewMode" id="mode-save" value="savings" checked>
+                                <div class="radio-tile">Savings</div>
+                            </div>
+                            <div class="custom-radio">
+                                <input type="radio" name="viewMode" id="mode-cost" value="costs">
+                                <div class="radio-tile">Costs</div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="oer-panel-right">
+                    <div class="viz-header">
+                        <div class="viz-title" id="viz-heading" role="heading" aria-level="3">Cumulative Savings</div>
+                        
+                        <label class="toggle-wrapper">
+                            <span>Line</span>
+                            <input type="checkbox" id="type-toggle">
+                            <div class="toggle-bg"><div class="toggle-dot"></div></div>
+                            <span>Bar</span>
+                        </label>
+                    </div>
+
+                    <div class="chart-box">
+                        <canvas id="a11yCanvas" aria-label="Visualization graph. Please refer to the table below for data." role="img"></canvas>
+                    </div>
+
+                    <!-- Screen Reader Data Table (Visually Hidden) -->
+                    <div class="sr-only" aria-live="polite">
+                        <table id="sr-data-table">
+                            <caption>Graph Data Values</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Semester</th>
+                                    <th scope="col" id="th-oer">OER</th>
+                                    <th scope="col" id="th-alt">Alternative</th>
+                                    <th scope="col" id="th-curr">Current</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sr-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <!-- Live Region for Results -->
+                    <div class="results-section" id="live-results" aria-live="polite" aria-atomic="true">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- 4. Logic -->
+                <script>
+                    (function() {
+                        // Check for Reduced Motion Preference
+                        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                        const ctx = document.getElementById('a11yCanvas').getContext('2d');
+                        
+                        const ui = {
+                            curr: document.getElementById('inp-curr'),
+                            alt: document.getElementById('inp-alt'),
+                            stu: document.getElementById('inp-stu'),
+                            sem: document.getElementById('inp-sem'),
+                            toggle: document.getElementById('type-toggle'),
+                            heading: document.getElementById('viz-heading'),
+                            results: document.getElementById('live-results'),
+                            tbody: document.getElementById('sr-table-body')
+                        };
+
+                        const radios = document.querySelectorAll('input[name="viewMode"]');
+
+                        let myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: [],
+                                datasets: [
+                                    {
+                                        label: 'OER (Open Ed)',
+                                        data: [],
+                                        borderColor: '#1b5e20', // Green
+                                        backgroundColor: 'rgba(27, 94, 32, 0.7)',
+                                        borderWidth: 3,
+                                        pointStyle: 'rectRot',
+                                        pointRadius: 6,
+                                        tension: 0.2
+                                    },
+                                    {
+                                        label: 'Alternative Option',
+                                        data: [],
+                                        borderColor: '#e65100', // Orange
+                                        backgroundColor: 'rgba(230, 81, 0, 0.7)',
+                                        borderWidth: 3,
+                                        borderDash: [5, 5],
+                                        pointStyle: 'triangle',
+                                        pointRadius: 6,
+                                        tension: 0.2
+                                    },
+                                    {
+                                        label: 'Current Book',
+                                        data: [],
+                                        borderColor: '#b71c1c', // Red
+                                        backgroundColor: 'rgba(183, 28, 28, 0.7)',
+                                        borderWidth: 3,
+                                        pointStyle: 'circle',
+                                        pointRadius: 6,
+                                        tension: 0.2,
+                                        hidden: true
+                                    }
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                animation: {
+                                    duration: prefersReducedMotion ? 0 : 750
+                                },
+                                layout: {
+                                    padding: {
+                                        left: 0,
+                                        right: 10, /* Added padding specifically to help prevent edge clipping */
+                                        top: 0,
+                                        bottom: 0
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        grace: '5%',
+                                        ticks: { callback: (v) => '$' + v.toLocaleString() },
+                                        title: { display: true, text: 'US Dollars ($)' }
+                                    },
+                                    x: {
+                                        title: { display: true, text: 'Timeline (Semesters)' }
+                                    }
+                                },
+                                plugins: {
+                                    legend: { 
+                                        labels: { usePointStyle: true, color: '#000', font: { weight: 'bold' } } 
+                                    },
+                                    tooltip: {
+                                        titleColor: '#fff',
+                                        bodyColor: '#fff',
+                                        callbacks: { label: (c) => c.dataset.label + ': $' + c.raw.toLocaleString() }
+                                    }
+                                }
+                            }
+                        });
+
+                        function update() {
+                            const pCurr = parseFloat(ui.curr.value) || 0;
+                            const pAlt = parseFloat(ui.alt.value) || 0;
+                            const nStu = parseInt(ui.stu.value) || 0;
+                            const nSem = parseInt(ui.sem.value) || 1;
+
+                            let mode = 'savings';
+                            radios.forEach(r => { if(r.checked) mode = r.value; });
+
+                            const labels = [];
+                            const dOER = [], dAlt = [], dCurr = [];
+                            let runOER = 0, runAlt = 0, runCurr = 0;
+                            let tableHTML = "";
+
+                            // Per Semester Calculations
+                            const savingSemOER = (pCurr - 0) * nStu;
+                            const savingSemAlt = (pCurr - pAlt) * nStu;
+                            
+                            const costSemOER = 0;
+                            const costSemAlt = pAlt * nStu;
+                            const costSemCurr = pCurr * nStu;
+
+                            for(let i=1; i<=nSem; i++) {
+                                labels.push('Sem ' + i);
+                                
+                                if(mode === 'savings') {
+                                    runOER += savingSemOER;
+                                    runAlt += savingSemAlt;
+                                } else {
+                                    runOER += costSemOER;
+                                    runAlt += costSemAlt;
+                                    runCurr += costSemCurr;
+                                }
+
+                                dOER.push(runOER);
+                                dAlt.push(runAlt);
+                                dCurr.push(runCurr);
+
+                                tableHTML += `
+                                    <tr>
+                                        <td>Semester ${i}</td>
+                                        <td>$${runOER.toLocaleString()}</td>
+                                        <td>$${runAlt.toLocaleString()}</td>
+                                        <td>$${(mode==='costs' ? runCurr : 0).toLocaleString()}</td>
+                                    </tr>
+                                `;
+                            }
+
+                            ui.tbody.innerHTML = tableHTML;
+                            myChart.data.labels = labels;
+
+                            if(mode === 'savings') {
+                                // --- SAVINGS VIEW ---
+                                ui.heading.textContent = "Cumulative Savings Potential";
+                                
+                                myChart.data.datasets[0].label = "Savings with OER";
+                                myChart.data.datasets[0].data = dOER;
+                                myChart.data.datasets[0].hidden = false;
+
+                                myChart.data.datasets[1].label = "Savings with Alternative";
+                                myChart.data.datasets[1].data = dAlt;
+                                myChart.data.datasets[1].hidden = false;
+
+                                myChart.data.datasets[2].hidden = true;
+
+                                ui.results.innerHTML = `
+                                    <div class="hero-card">
+                                        <span class="hero-text">Total OER Savings</span>
+                                        <span class="hero-num">$${runOER.toLocaleString()}</span>
+                                    </div>
+                                    <div class="sub-card">
+                                        <span>Total Savings with Alternative</span>
+                                        <span class="sub-num">$${runAlt.toLocaleString()}</span>
+                                    </div>
+                                `;
+                            } else {
+                                // --- COSTS VIEW ---
+                                ui.heading.textContent = "Cumulative Student Costs";
+                                
+                                myChart.data.datasets[0].label = "Cost of OER ($0)";
+                                myChart.data.datasets[0].data = dOER;
+                                myChart.data.datasets[0].hidden = false;
+
+                                myChart.data.datasets[1].label = "Cost of Alternative";
+                                myChart.data.datasets[1].data = dAlt;
+                                myChart.data.datasets[1].hidden = false;
+
+                                myChart.data.datasets[2].label = "Cost of Current Book";
+                                myChart.data.datasets[2].data = dCurr;
+                                myChart.data.datasets[2].hidden = false;
+
+                                ui.results.innerHTML = `
+                                    <div class="hero-card">
+                                        <span class="hero-text">Cost of OER (Free)</span>
+                                        <span class="hero-num">$0</span>
+                                    </div>
+                                    <div class="sub-card" style="border-left: 5px solid #e65100;">
+                                        <span>Cost of Alternative Option</span>
+                                        <span class="sub-num">$${runAlt.toLocaleString()}</span>
+                                    </div>
+                                    <div class="sub-card" style="border-left: 5px solid #b71c1c;">
+                                        <span>Cost of Current Book</span>
+                                        <span class="sub-num">$${runCurr.toLocaleString()}</span>
+                                    </div>
+                                `;
+                            }
+
+                            const isBar = ui.toggle.checked;
+                            myChart.config.type = isBar ? 'bar' : 'line';
+                            
+                            // IMPORTANT FIX: 
+                            // When chart type is 'bar', we must set offset: true to prevent bars from being cut off.
+                            // When chart type is 'line', offset: false (or standard) places points on the axis lines.
+                            myChart.options.scales.x.offset = isBar;
+
+                            myChart.data.datasets.forEach(ds => ds.fill = isBar);
+                            
+                            myChart.update();
+                        }
+
+                        [ui.curr, ui.alt, ui.stu, ui.sem, ui.toggle].forEach(el => {
+                            el.addEventListener('input', update);
+                            el.addEventListener('change', update);
+                        });
+                        radios.forEach(r => r.addEventListener('change', update));
+
+                        update();
+                    })();
+                </script>
+            </div>
+            <!-- END WIDGET CODE -->
+            <br />
+            <small>This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.</small>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function copyCode() {
+        const codeElement = document.getElementById("raw-code");
+        const btn = document.querySelector(".copy-btn");
+        
+        // Copy functionality
+        navigator.clipboard.writeText(codeElement.innerText).then(() => {
+            // Visual feedback
+            const originalText = btn.innerText;
+            btn.innerText = "Copied!";
+            btn.classList.add("copied");
+
+            // Reset after 2 seconds
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.classList.remove("copied");
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy', err);
+            alert("Error copying code. Please select and copy manually.");
+        });
+    }
+</script>
+
 </body>
 </html>
