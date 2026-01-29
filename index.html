@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OER Impact Calculator - LibGuides Widget</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; margin: 0; padding: 0; color: #333; }
+        header { background: #2c3e50; color: #fff; padding: 40px 20px; text-align: center; }
+        h1 { margin: 0; font-size: 2.5rem; }
+        p.subtitle { opacity: 0.8; font-size: 1.1rem; margin-top: 10px; }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+        
+        .section-title { border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; color: #1b5e20; }
+        
+        /* The specific box for the code copy area */
+        .code-area { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 40px; }
+        textarea { width: 100%; height: 300px; font-family: monospace; padding: 10px; border: 1px solid #ccc; background: #fafafa; border-radius: 4px; box-sizing: border-box; }
+        
+        .btn { background: #2c3e50; color: white; border: none; padding: 12px 25px; font-size: 1rem; cursor: pointer; border-radius: 4px; margin-top: 10px; transition: 0.2s; }
+        .btn:hover { background: #34495e; }
+        .btn-success { background: #27ae60; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>OER Impact Calculator</h1>
+    <p class="subtitle">A responsive, accessible widget for your LibGuides</p>
+</header>
+
+<div class="container">
+
+    <!-- DEMO SECTION -->
+    <h2 class="section-title">Live Demo</h2>
+    <p>Try the widget below. This is exactly how it will appear on your guide. This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.</p>
+    
+    <!-- WIDGET CONTAINER START (We give this an ID to grab the HTML later) -->
+    <div id="widget-source">
+        
+<!-- START OER WIDGET CODE -->
+<div id="oer-a11y-widget">
+    <!-- Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        #oer-a11y-widget { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; max-width: 100%; margin: 0 auto; background: #ffffff; border: 1px solid #767676; border-radius: 8px; display: flex; flex-wrap: wrap; color: #222; box-sizing: border-box; }
+        #oer-a11y-widget * { box-sizing: border-box; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        .oer-panel-left { flex: 1; min-width: 280px; padding: 20px; background-color: #f4f4f4; border-right: 1px solid #ccc; border-radius: 8px 0 0 8px; }
+        #oer-a11y-widget h2 { margin: 0 0 10px 0; color: #1b5e20; font-size: 1.4rem; line-height: 1.3; }
+        .oer-desc { font-size: 0.95rem; color: #444; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 15px; }
+        .input-group { margin-bottom: 15px; }
+        #oer-a11y-widget label { display: block; font-weight: 700; margin-bottom: 5px; color: #222; font-size: 0.9rem; }
+        #oer-a11y-widget input[type="number"] { width: 100%; padding: 10px; border: 2px solid #555; border-radius: 4px; font-size: 1rem; background: #fff; color: #000; }
+        #oer-a11y-widget input[type="number"]:focus { outline: 3px solid #005fcc; border-color: #005fcc; }
+        #oer-a11y-widget fieldset { border: 0; padding: 0; margin: 20px 0 0 0; border-top: 1px solid #ccc; padding-top
