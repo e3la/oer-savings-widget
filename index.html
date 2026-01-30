@@ -50,7 +50,7 @@
             color: #d4d4d4;
             padding: 20px;
             overflow-x: auto;
-            max-height: 400px; /* Limits height so preview isn't too far down */
+            max-height: 400px; 
             overflow-y: auto;
         }
 
@@ -58,7 +58,7 @@
         code {
             font-family: "Consolas", "Monaco", "Courier New", monospace;
             font-size: 13px;
-            white-space: pre; /* Keeps code formatting exact */
+            white-space: pre; 
         }
 
         /* Copy Button */
@@ -534,8 +534,9 @@
                 let tableHTML = "";
 
                 // Per Semester Calculations
-                const savingSemOER = (pCurr - 0) * nStu;
-                const savingSemAlt = (pCurr - pAlt) * nStu;
+                // FIX: Added Math.max(0, ...) to ensure savings don't display as negative
+                const savingSemOER = Math.max(0, (pCurr - 0) * nStu);
+                const savingSemAlt = Math.max(0, (pCurr - pAlt) * nStu);
                 
                 const costSemOER = 0;
                 const costSemAlt = pAlt * nStu;
@@ -629,11 +630,7 @@
                 const isBar = ui.toggle.checked;
                 myChart.config.type = isBar ? 'bar' : 'line';
                 
-                // IMPORTANT FIX: 
-                // When chart type is 'bar', we must set offset: true to prevent bars from being cut off.
-                // When chart type is 'line', offset: false (or standard) places points on the axis lines.
                 myChart.options.scales.x.offset = isBar;
-
                 myChart.data.datasets.forEach(ds =&gt; ds.fill = isBar);
                 
                 myChart.update();
@@ -649,10 +646,7 @@
         })();
     &lt;/script&gt;
 &lt;/div&gt;
-
 &lt;!-- END WIDGET CODE --&gt;
-This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;copy of the code is here for your convenience&lt;/a&gt;) was created with Google Gemini by Helena Marvin and you can see &lt;a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing"&gt;the prompt here.&lt;/a&gt; Much thanks to the chart.js library under the the MIT License.
-<!-- END WIDGET CODE -->
 </code></pre>
         </div>
     </div>
@@ -738,7 +732,7 @@ This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;cop
                         font-size: 1rem;
                         background: #fff;
                         color: #000;
-                        box-sizing: border-box; /* ADDED FIX for widths */
+                        box-sizing: border-box; 
                     }
 
                     #oer-a11y-widget input[type="number"]:focus {
@@ -1099,8 +1093,9 @@ This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;cop
                             let tableHTML = "";
 
                             // Per Semester Calculations
-                            const savingSemOER = (pCurr - 0) * nStu;
-                            const savingSemAlt = (pCurr - pAlt) * nStu;
+                            // FIX: Added Math.max(0, ...) to ensure savings don't display as negative
+                            const savingSemOER = Math.max(0, (pCurr - 0) * nStu);
+                            const savingSemAlt = Math.max(0, (pCurr - pAlt) * nStu);
                             
                             const costSemOER = 0;
                             const costSemAlt = pAlt * nStu;
@@ -1194,11 +1189,7 @@ This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;cop
                             const isBar = ui.toggle.checked;
                             myChart.config.type = isBar ? 'bar' : 'line';
                             
-                            // IMPORTANT FIX: 
-                            // When chart type is 'bar', we must set offset: true to prevent bars from being cut off.
-                            // When chart type is 'line', offset: false (or standard) places points on the axis lines.
                             myChart.options.scales.x.offset = isBar;
-
                             myChart.data.datasets.forEach(ds => ds.fill = isBar);
                             
                             myChart.update();
@@ -1216,7 +1207,8 @@ This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;cop
             </div>
             <!-- END WIDGET CODE -->
             <br />
-            <small>This CC0 widget (a <a href="https://e3la.github.io/oer-savings-widget/">copy of the code is here for your convenience</a>) was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.</small>
+            <small>This widget was created with Google Gemini by Helena Marvin and you can see <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221ZUFwqIOCJByHFj0w-RX45LuzWU-5YQAh%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt here.</a> Much thanks to the chart.js library under the the MIT License.</small>
+
         </div>
     </div>
 
@@ -1245,8 +1237,6 @@ This CC0 widget (a &lt;a href="https://e3la.github.io/oer-savings-widget"&gt;cop
         });
     }
 </script>
-
-    <br> This CC0 page was crafted with Gemini by Helena Marvin and <a href="https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221rH2boDFWd_kzQVlkzX2geEnat11TOEg5%22%5D,%22action%22:%22open%22,%22userId%22:%22106905111806513074045%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing">the prompt can be found here</a>.
 
 </body>
 </html>
